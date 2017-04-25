@@ -4,9 +4,13 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'scrooloose/nerdtree'
-
 Plug 'scrooloose/nerdcommenter'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
 Plug 'yegappan/grep'
+Plug 'yegappan/greplace'
+
+Plug 'hesselbom/vim-hsftp'
 
 Plug 'sheerun/vim-polyglot'
 
@@ -16,7 +20,6 @@ Plug 'benjie/neomake-local-eslint.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'nanotech/jellybeans.vim'
 Plug 'joshdick/onedark.vim'
 
 Plug 'gorodinskiy/vim-coloresque'
@@ -28,9 +31,10 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'mattn/emmet-vim'
 
-Plug 'yegappan/greplace'
+Plug 'bronson/vim-trailing-whitespace'
 
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 
@@ -40,15 +44,20 @@ Plug 'vim-scripts/nginx.vim'
 
 Plug 'hdima/python-syntax'
 
+Plug 'plasticboy/vim-markdown'
+
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
-Plug 'ruanyl/vim-fixmyjs'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'ruanyl/vim-fixmyjs'
+Plug 'mxw/vim-jsx'
+Plug 'posva/vim-vue'
+Plug 'flowtype/vim-flow'
+Plug 'steelsojka/deoplete-flow'
 
+Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'ianks/vim-tsx'
 
@@ -71,29 +80,61 @@ endif
 
 set guicursor=
 
-let python_highlight_all=1
 let g:user_emmet_leader_key='<C-Z>'
+
 let g:ctrlp_custom_ignore='node_modules\|git\|deps\|_build'
+let g:ctrlp_show_hidden=1
 
 let g:neomake_open_list=0
-let g:neomake_javascript_enabled_makers=['eslint']
+let g:neomake_javascript_enabled_makers=['eslint', 'flow']
+let g:neomake_jsx_enabled_makers = ['eslint', 'flow']
 
 autocmd! BufWritePost * Neomake
 
 let g:fixmyjs_use_local=1
 let g:fixmyjs_rc_filename=".eslintrc"
 
+" autocmd BufWritePre *.js :Fixmyjs
+" autocmd BufWritePre *.jsx :Fixmyjs
+
 let g:NERDSpaceDelims=1
 let g:NERDTrimTrailingWhitespace=1
 let g:NERDCommentEmptyLines=1
 let g:NERDDefaultAlign='left'
+let g:NERDTreeWinSize=26
 
-" Typescript autocomplete
+let g:javascript_plugin_jsdoc=1
+let g:javascript_plugin_flow=1
+
+" Use locally installed flow
+let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+if matchstr(local_flow, "^\/\\w") == ''
+    let local_flow = getcwd() . "/" . local_flow
+endif
+if executable(local_flow)
+  let g:flow#flowpath = local_flow
+  let g:deoplete#sources#flow#flow_bin = local_flow
+  let g:neomake_javascript_flow_exe = local_flow
+endif
+
+let g:flow#enable=0
+let g:flow#autoclose=1
+
 let g:tsuquyomi_completion_detail=1
+
+let python_highlight_all=1
+
+let g:vim_markdown_folding_disabled=1
+
+function! s:setupMarkup()
+  command MdPreview silent !google-chrome %:p<CR>
+endfunction
+
+au BufRead,BufNewFile *.md call s:setupMarkup()
 
 " Rust
 set hidden
-let g:racer_cmd="/home/oym/.cargo/bin/racer"
+let g:racer_cmd=$HOME . "/.cargo/bin/racer"
 let g:racer_experimental_completer=1
 let g:rustfmt_autosave=1
 
@@ -109,6 +150,12 @@ nnoremap <C-j> <C-w><Down>
 nnoremap <C-l> <C-w><Right>
 nnoremap <C-h> <C-w><Left>
 
+function! ClipboardYank()
+  call system('xclip -i -selection clipboard', @@)
+endfunction
+
+vnoremap <silent> y y:call ClipboardYank()<cr>
+
 syntax on
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
@@ -118,7 +165,6 @@ set t_ut=
 
 colorscheme onedark
 let g:onedark_termcolors=256
-" colorscheme jellybeans
 
 set wildmenu
 
@@ -127,7 +173,6 @@ set hlsearch
 "airline
 set laststatus=2
 set noshowmode
-let g:airline_theme='onedark'
 
 " Enable line numbers
 " with width 2
@@ -186,9 +231,6 @@ set completeopt=longest,menuone,preview
 autocmd FileType css setl omnifunc=csscomplete#CompleteCSS
 " Enable nginx highligth
 autocmd BufRead,BufNewFile /etc/nginx/*,/usr/local/nginx/conf/* if &ft == '' | setfiletype nginx | endif
-
-" autocmd BufWritePre *.js :Fixmyjs
-" autocmd BufWritePre *.jsx :Fixmyjs
 
 autocmd CompleteDone * pclose!
 
