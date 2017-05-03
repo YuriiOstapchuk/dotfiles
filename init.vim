@@ -12,10 +12,10 @@ Plug 'yegappan/greplace'
 
 Plug 'hesselbom/vim-hsftp'
 
-Plug 'sheerun/vim-polyglot'
-
 Plug 'neomake/neomake'
 Plug 'benjie/neomake-local-eslint.vim'
+
+Plug 'sbdchd/neoformat'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -60,6 +60,8 @@ Plug 'steelsojka/deoplete-flow'
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
 Plug 'ianks/vim-tsx'
+
+Plug 'reasonml/vim-reason-loader'
 
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
@@ -142,6 +144,18 @@ au FileType rust nmap gd <Plug>(rust-def)
 au FileType rust nmap gs <Plug>(rust-def-split)
 au FileType rust nmap gx <Plug>(rust-def-vertical)
 au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
+if executable('ocamlmerlin')
+  " To set the log file and restart:
+  let s:ocamlmerlin=substitute(system('which ocamlmerlin'),'ocamlmerlin\n$','','') . "../share/merlin/vim/"
+  execute "set rtp+=".s:ocamlmerlin
+  let g:neomake_ocaml_enabled_makers=['merlin']
+endif
+if executable('refmt')
+  let s:reason=substitute(system('which refmt'),'refmt\n$','','') . "../share/reason/editorSupport/VimReason"
+  execute "set rtp+=".s:reason
+  let g:neomake_reason_enabled_makers=['merlin']
+endif
 
 let mapleader=","
 
