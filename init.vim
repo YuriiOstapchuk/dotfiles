@@ -63,6 +63,10 @@ Plug 'ianks/vim-tsx'
 
 Plug 'reasonml/vim-reason-loader'
 
+Plug 'neovimhaskell/haskell-vim'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/neco-ghc'
+
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 
@@ -88,13 +92,13 @@ let g:ctrlp_custom_ignore='node_modules\|git\|deps\|_build'
 let g:ctrlp_show_hidden=1
 
 let g:neomake_open_list=0
-let g:neomake_javascript_enabled_makers=['eslint', 'flow']
-let g:neomake_jsx_enabled_makers = ['eslint', 'flow']
+let g:neomake_javascript_enabled_makers=['eslint']
+let g:neomake_jsx_enabled_makers=['eslint']
 
 autocmd! BufWritePost * Neomake
 
 let g:fixmyjs_use_local=1
-let g:fixmyjs_rc_filename=".eslintrc"
+let g:fixmyjs_rc_filename='.eslintrc'
 
 " autocmd BufWritePre *.js :Fixmyjs
 " autocmd BufWritePre *.jsx :Fixmyjs
@@ -114,9 +118,12 @@ if matchstr(local_flow, "^\/\\w") == ''
     let local_flow = getcwd() . "/" . local_flow
 endif
 if executable(local_flow)
-  let g:flow#flowpath = local_flow
-  let g:deoplete#sources#flow#flow_bin = local_flow
-  let g:neomake_javascript_flow_exe = local_flow
+  call add(g:neomake_javascript_enabled_makers, 'flow')
+  call add(g:neomake_jsx_enabled_makers, 'flow')
+
+  let g:flow#flowpath=local_flow
+  let g:deoplete#sources#flow#flow_bin=local_flow
+  let g:neomake_javascript_flow_exe=local_flow
 endif
 
 let g:flow#enable=0
