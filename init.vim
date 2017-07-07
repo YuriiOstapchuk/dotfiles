@@ -10,7 +10,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'yegappan/grep'
 Plug 'yegappan/greplace'
 
-Plug 'hesselbom/vim-hsftp'
+Plug 'eshion/vim-sync'
 
 Plug 'neomake/neomake'
 Plug 'benjie/neomake-local-eslint.vim'
@@ -21,8 +21,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'joshdick/onedark.vim'
-
-Plug 'gorodinskiy/vim-coloresque'
+Plug 'nanotech/jellybeans.vim'
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
@@ -50,12 +49,12 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 
 Plug 'pangloss/vim-javascript'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'ruanyl/vim-fixmyjs'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'flowtype/vim-flow'
 Plug 'steelsojka/deoplete-flow'
+Plug 'jason0x43/vim-tss', { 'for': [ 'javascript' ], 'do': 'npm install' }
 
 Plug 'leafgarland/typescript-vim'
 Plug 'Quramy/tsuquyomi'
@@ -72,6 +71,8 @@ Plug 'tpope/vim-rails'
 
 Plug 'tpope/vim-haml'
 
+Plug 'tpope/vim-fireplace'
+
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 call plug#end()
@@ -85,6 +86,7 @@ if empty(glob("~/.config/nvim/autoload/plug.vim"))
 endif
 
 set guicursor=
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 let g:user_emmet_leader_key='<C-Z>'
 
@@ -95,7 +97,15 @@ let g:neomake_open_list=0
 let g:neomake_javascript_enabled_makers=['eslint']
 let g:neomake_jsx_enabled_makers=['eslint']
 
-autocmd! BufWritePost * Neomake
+autocmd BufWritePost * Neomake
+
+" autocmd BufWritePre *.js Neoformat
+autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ --trailing-comma\ all
+let g:neoformat_try_formatprg = 1
+
+if (executable(getcwd() . "/.sync"))
+  autocmd BufWritePost * call SyncUploadFile()
+endif
 
 let g:fixmyjs_use_local=1
 let g:fixmyjs_rc_filename='.eslintrc'
@@ -115,7 +125,7 @@ let g:javascript_plugin_flow=1
 " Use locally installed flow
 let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
 if matchstr(local_flow, "^\/\\w") == ''
-    let local_flow = getcwd() . "/" . local_flow
+  let local_flow = getcwd() . "/" . local_flow
 endif
 if executable(local_flow)
   call add(g:neomake_javascript_enabled_makers, 'flow')
@@ -134,12 +144,6 @@ let g:tsuquyomi_completion_detail=1
 let python_highlight_all=1
 
 let g:vim_markdown_folding_disabled=1
-
-function! s:setupMarkup()
-  command MdPreview silent !google-chrome %:p<CR>
-endfunction
-
-au BufRead,BufNewFile *.md call s:setupMarkup()
 
 " Rust
 set hidden
@@ -183,6 +187,10 @@ set termguicolors
 set background=dark
 set t_Co=256
 set t_ut=
+
+" let g:onedark_color_overrides = {
+" \ 'black': { 'gui': '#202020', 'cterm': '235' }
+" \}
 
 colorscheme onedark
 let g:onedark_termcolors=256
@@ -245,7 +253,8 @@ set backupcopy=yes
 set mouse=
 
 " Enable completion for dash-case vars (css)
-set iskeyword+=-
+autocmd FileType css,scss set iskeyword=$,@,48-57,_,-,?,!,192-255
+
 " Disable completion typing until selected
 set completeopt=longest,menuone,preview
 
