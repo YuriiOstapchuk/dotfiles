@@ -12,6 +12,9 @@ Plug 'yegappan/greplace'
 
 Plug 'eshion/vim-sync'
 
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
+
 Plug 'neomake/neomake'
 Plug 'benjie/neomake-local-eslint.vim'
 
@@ -49,16 +52,15 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 
 Plug 'pangloss/vim-javascript'
-Plug 'ruanyl/vim-fixmyjs'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'flowtype/vim-flow'
 Plug 'steelsojka/deoplete-flow'
-Plug 'jason0x43/vim-tss', { 'for': [ 'javascript' ], 'do': 'npm install' }
+Plug 'jason0x43/vim-tss', { 'for': [ 'javascript', 'typescript' ], 'do': 'npm install' }
 
 Plug 'leafgarland/typescript-vim'
-Plug 'Quramy/tsuquyomi'
-Plug 'ianks/vim-tsx'
+
+Plug 'bdauria/angular-cli.vim'
 
 Plug 'reasonml/vim-reason-loader'
 
@@ -68,10 +70,11 @@ Plug 'eagletmt/neco-ghc'
 
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
-
 Plug 'tpope/vim-haml'
-
 Plug 'tpope/vim-fireplace'
+
+Plug 'digitaltoad/vim-pug'
+Plug 'othree/html5.vim'
 
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
@@ -85,6 +88,8 @@ if empty(glob("~/.config/nvim/autoload/plug.vim"))
   auto VimEnter * PlugInstall
 endif
 
+autocmd VimEnter * if globpath('.,..','node_modules/@angular') != '' | call angular_cli#init() | endif
+
 set guicursor=
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
@@ -94,24 +99,41 @@ let g:ctrlp_custom_ignore='node_modules\|git\|deps\|_build'
 let g:ctrlp_show_hidden=1
 
 let g:neomake_open_list=0
+
+let g:neomake_elixir_enabled_makers = ['elixir']
+let ebins = system('for f in ' . getcwd() . '/_build/**/ebin; do echo -pa $f; done')
+let pa_deps = split(join(split(ebins, '\n'), ' '), ' ')
+let g:neomake_elixir_elixir_maker = {
+      \ 'exe': 'elixirc',
+      \ 'args': [
+        \ '--ignore-module-conflict',
+        \ '--app',
+        \ 'mix',
+        \ '--app',
+        \ 'ex_unit',
+        \ '-o',
+        \ '/tmp'] + pa_deps,
+      \ 'errorformat':
+          \ '%E** %s %f:%l: %m,' .
+          \ '%Wwarning: %m,%C  %f:%l,%Z'
+      \ }
+
 let g:neomake_javascript_enabled_makers=['eslint']
 let g:neomake_jsx_enabled_makers=['eslint']
 
+runtime plugin/neomake-local-eslint.vim
+let g:neomake_typescript_tslint_exe = GetNpmBin('tslint')
+
 autocmd BufWritePost * Neomake
 
-" autocmd BufWritePre *.js Neoformat
+autocmd BufWritePre *.js,*.jsx,*.ts Neoformat
 autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ --trailing-comma\ all
+autocmd FileType typescript setlocal formatprg=prettier\ --parser\ typescript\ --stdin\ --single-quote\ --trailing-comma\ all
 let g:neoformat_try_formatprg = 1
 
 if (executable(getcwd() . "/.sync"))
   autocmd BufWritePost * call SyncUploadFile()
 endif
-
-let g:fixmyjs_use_local=1
-let g:fixmyjs_rc_filename='.eslintrc'
-
-" autocmd BufWritePre *.js :Fixmyjs
-" autocmd BufWritePre *.jsx :Fixmyjs
 
 let g:NERDSpaceDelims=1
 let g:NERDTrimTrailingWhitespace=1
@@ -121,6 +143,7 @@ let g:NERDTreeWinSize=26
 
 let g:javascript_plugin_jsdoc=1
 let g:javascript_plugin_flow=1
+" let g:jsx_ext_required = 0
 
 " Use locally installed flow
 let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
@@ -192,6 +215,7 @@ set t_ut=
 " \ 'black': { 'gui': '#202020', 'cterm': '235' }
 " \}
 
+" colorscheme jellybeans
 colorscheme onedark
 let g:onedark_termcolors=256
 
