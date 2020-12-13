@@ -9,6 +9,14 @@
     "source.fixAll.tslint": true
   },
   //
+  "editor.semanticTokenColorCustomizations": {
+    "rules": {
+      // different color for all constants
+      "*.readonly": "#9cdcfe",
+      "function": "#dcdcaa"
+    }
+  },
+  //
   "gitlens.advanced.messages": {
     "suppressShowKeyBindingsNotice": true
   },
@@ -16,7 +24,7 @@
   "gitlens.hovers.currentLine.over": "line",
   "gitlens.codeLens.enabled": false,
   "gitlens.hovers.enabled": false,
-  "gitlens.mode.statusBar.enabled": false,
+  "gitlens.mode.statusBar.enabled": true,
   //
   "vim.hlsearch": true,
   "vim.leader": ",",
@@ -39,18 +47,40 @@
     "typescriptreact"
   ],
   //
-  "npm.enableScriptExplorer": true,
   "npm.packageManager": "yarn",
+  //
+  "solargraph.formatting": true,
+  "solargraph.definitions": true,
+  "solargraph.hover": true,
+  "solargraph.diagnostics": false,
   //
   "explorer.confirmDelete": false,
   "window.zoomLevel": 1,
   "editor.suggestSelection": "first",
   //
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "breadcrumbs.enabled": true,
-  "extensions.ignoreRecommendations": false,
-  "metals.javaHome": "/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/",
+  "extensions.ignoreRecommendations": true,
   "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "svgPreview.autoOpen": false,
+  "timeline.excludeSources": [],
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
