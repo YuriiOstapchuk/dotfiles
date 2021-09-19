@@ -1,13 +1,11 @@
 {
   "editor.fontSize": 15,
-  "editor.fontFamily": "source code pro",
+  "editor.fontFamily": "Source Code Pro for Powerline",
   "editor.tabSize": 2,
   "editor.lineNumbers": "relative",
   "editor.formatOnSave": true,
   "editor.scrollBeyondLastLine": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.tslint": true
-  },
+  "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.fixAll.format"],
   //
   "editor.semanticTokenColorCustomizations": {
     "rules": {
@@ -18,7 +16,7 @@
   },
   //
   "gitlens.advanced.messages": {
-    "suppressShowKeyBindingsNotice": true
+    // "suppressShowKeyBindingsNotice": true
   },
   "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
@@ -55,11 +53,10 @@
   "solargraph.diagnostics": false,
   //
   "explorer.confirmDelete": false,
-  "window.zoomLevel": 1,
   "editor.suggestSelection": "first",
   //
   "breadcrumbs.enabled": true,
-  "extensions.ignoreRecommendations": true,
+  // "extensions.ignoreRecommendations": true,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -82,5 +79,11 @@
   },
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "workbench.editor.enablePreview": false,
+  "editor.cursorStyle": "line",
+  "editor.insertSpaces": false,
+  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+  "editor.wordWrap": "off",
+  "window.zoomLevel": 1
 }
