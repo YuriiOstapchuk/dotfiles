@@ -2,10 +2,16 @@
   "editor.fontSize": 15,
   "editor.fontFamily": "Source Code Pro for Powerline",
   "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
   "editor.lineNumbers": "relative",
   "editor.formatOnSave": true,
   "editor.scrollBeyondLastLine": true,
-  "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.fixAll.format"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.format": "explicit"
+  },
+  // "editor.codeLens": true,
   //
   "editor.semanticTokenColorCustomizations": {
     "rules": {
@@ -14,15 +20,17 @@
       "function": "#dcdcaa"
     }
   },
+  "gitblame.statusBarMessageFormat": "${author.name} (${time.ago})",
   //
   "gitlens.advanced.messages": {
     // "suppressShowKeyBindingsNotice": true
   },
-  "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
-  "gitlens.codeLens.enabled": false,
   "gitlens.hovers.enabled": false,
   "gitlens.mode.statusBar.enabled": true,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.codeLens.recentChange.enabled": false,
   //
   "vim.hlsearch": true,
   "vim.leader": ",",
@@ -47,10 +55,9 @@
   //
   "npm.packageManager": "yarn",
   //
-  "solargraph.formatting": true,
-  "solargraph.definitions": true,
-  "solargraph.hover": true,
-  "solargraph.diagnostics": false,
+  "rubyLsp.rubyVersionManager": {
+    "identifier": "rbenv"
+  },
   //
   "explorer.confirmDelete": false,
   "editor.suggestSelection": "first",
@@ -70,7 +77,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "svgPreview.autoOpen": false,
-  "timeline.excludeSources": [],
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -82,8 +88,28 @@
   },
   "workbench.editor.enablePreview": false,
   "editor.cursorStyle": "line",
-  "editor.insertSpaces": false,
   "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
   "editor.wordWrap": "off",
-  "window.zoomLevel": 1
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "json.schemas": [],
+  "redhat.telemetry.enabled": true,
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.stickyScroll.enabled": true,
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.layoutControl.enabled": false,
+  "window.commandCenter": false,
+  "window.zoomLevel": 1,
+  "supermaven.enable": {
+    "*": true
+  }
 }
